@@ -26,7 +26,7 @@ app.use(require("./routes/api.js"));
 mongoose.Promise = global.Promise;
 
 mongoose.connect (
-  process.env.MONGODB_URI || "mongodb://User2:password1@ds027489.mlab.com:27489/heroku_wrrcc7n1",
+  process.env.MONGODB_URI || "mongodb://User2:password1@ds237717.mlab.com:37717/heroku_lz2th0lz",
   {
     useMongoClient: true
   }
