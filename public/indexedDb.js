@@ -1,5 +1,5 @@
 let db;
-db = event.target.result;
+//db = event.target.result;
 // create a new db request for a "budget" database.
 const request = window.indexedDB.open("budget",1);
 
