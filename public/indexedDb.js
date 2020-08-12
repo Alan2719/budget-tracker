@@ -1,18 +1,14 @@
 let db;
-//db = event.target.result;
 // create a new db request for a "budget" database.
 const request = window.indexedDB.open("budget",1);
 
 request.onupgradeneeded = function(event) {
-  const budgetStore = db.createObjectStore("transactions",{autoIncrement:true});
+  const db = event.target.result;
+  db.createObjectStore("pending", { autoIncrement: true });
 };
 
 request.onsuccess = function(event) {
-  db = target.result;
-
-  if (navigator.onLine) {
-    checkDatabase();
-  }
+  db = event.target.result;
 };
 
 request.onerror = function(event) {
@@ -20,11 +16,8 @@ request.onerror = function(event) {
 };
 
 function saveRecord(record) {
-  // create a transaction on the pending db with readwrite access
-  // access your pending object store
-  // add record to your store with add method.
-  const transaction = db.transaction(["transactions"],"readwrite");
-  const budgetStore = transaction.objectStore("transactions");
+  const transaction = db.transaction(["pending"],"readwrite");
+  const budgetStore = transaction.objectStore("pending");
   budgetStore.add(record);
 }
 
@@ -32,9 +25,9 @@ function checkDatabase() {
   // open a transaction on your pending db
   // access your pending object store
   // get all records from store and set to a variable
-  const transaction = db.transaction(["transactions"],"readwrite");
-  const store = transaction.objectStore("transactions");
-  const getAll = store.getAll();
+  const transaction = db.transaction(["pending"],"readwrite");
+  const budgetStore = transaction.objectStore("pending");
+  const getAll = budgetStore.getAll();
 
   getAll.onsuccess = function() {
     if (getAll.result.length > 0) {
@@ -49,11 +42,11 @@ function checkDatabase() {
       .then(response => response.json())
       .then(() => {
           // if successful, open a transaction on your pending db
-          const transaction = db.transaction(["transactions"],"readwrite");
+          const transaction = db.transaction(["pending"],"readwrite");
           // access your pending object store
-          const store = transaction.objectStore("transactions");
+          const budgetStore = transaction.objectStore("pending");
           // clear all items in your store
-          store.clear();
+          budgetStore.clear();
       });
     }
   };
